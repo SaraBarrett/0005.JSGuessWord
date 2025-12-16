@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/java.js" defer></script>
+  </head>
+  <body>
+    <h1>Guess the Word</h1>
+    <p>Tries: <span id="tries">0</span></p>
+    <div id="word-display"></div>
+
+    <div id="letters">
+      <p>Choose a letter</p>
+      <div id="letter-buttons"></div>
+    </div>
+    <div id="message"></div>
+    <button id="reset-game" onclick="fInitializeGame()">New Game</button>
+
+    <h4>Letters Tried</h4>
+    <div id="letters-tried"></div>
+    <h6 id="solution"></h6>
+  </body>
+</html>

@@ -29,8 +29,3 @@ A simple word guessing game built with HTML, CSS, and JavaScript.
 └── js/
     └── java.js     # Game logic
 ```
-
-## Words List
-
-The game includes these Portuguese cities:
-- Aveiro, Beja, Braga, Porto, Lisboa, Faro, Gaia

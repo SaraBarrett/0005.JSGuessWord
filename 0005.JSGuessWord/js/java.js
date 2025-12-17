@@ -8,7 +8,7 @@ let wrongAttempts = 0;
 let letterButtons = document.getElementById("letter-buttons");
 let solutionElement = document.getElementById("solution");
 let errorMessages = ["Game Over", "Bad Luck", "Ups, try latter"];
-let winMessages = ["Yay, we're done", "Good Luck!", "Awesome Game"];
+let winMessages = ["Yay, we're done", "You got luck!", "Awesome Game"];
 let lettersTried = document.getElementById("letters-tried");
 
 function fChooseRandomWord() {
@@ -48,15 +48,29 @@ function fCreateLetterButtons() {
     letterButtons.appendChild(button);
   }
 }
+
+function disableAllButtons() {
+  let allBtns = document.querySelectorAll(".letter-btn");
+  allBtns.forEach((item) => (item.disabled = true));
+}
 function fCheckLetter() {
   let letter = this.textContent;
-
 
   // identify iif the letter exists and is the same of the secret word
   for (j = 0; j < chosenWord.length; j++) {
     if (chosenWord[j] == letter) {
       guessWord[j] = letter;
     }
+  }
+
+  //if there's no _ left, user has won
+  if (!guessWord.includes("_")) {
+    //generate random win message
+    let randomNumber = Math.floor(Math.random() * winMessages.length);
+    alert(winMessages[randomNumber]);
+
+    //disable all buttons
+    disableAllButtons();
   }
 
   //count wrong tries
@@ -80,7 +94,6 @@ function fCheckLetter() {
     let newBtn = document.createElement("button");
     newBtn.textContent = letter;
     lettersTried.appendChild(newBtn);
-
   }
 
   //game over when reaches 9 wrong answers
@@ -88,13 +101,11 @@ function fCheckLetter() {
     solutionElement.textContent = "Solution: " + chosenWord;
 
     //generate random message
-
     let randomNumber = Math.floor(Math.random() * errorMessages.length);
     alert(errorMessages[randomNumber]);
 
     //disable all buttons
-    let allBtns = document.querySelectorAll(".letter-btn");
-    allBtns.forEach((item) => (item.disabled = true));
+    disableAllButtons();
   }
 
   wordDisplayElement.textContent = guessWord.join(" ");
@@ -107,9 +118,14 @@ function fCleanGame() {
   //set attempts to zero
   wrongAttempts = 0;
   wrongElement.textContent = wrongAttempts;
+
+  //set attempts to black again
   wrongElement.style.color = "black";
 
   lettersTried.replaceChildren();
+
+  //set solution to empty
+  solutionElement.textContent = "";
 }
 function fInitializeGame() {
   fCleanGame();

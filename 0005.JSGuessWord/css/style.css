@@ -1,17 +1,40 @@
-body{
+body {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#word-display
-{
-    font-size: 28px;
+
+#word-display {
+    font-size: 2em;
     margin: 20px 0;
 }
 
-#letter-buttons button{
-    font-size: 10px;
-    padding: 5px 10px;
+#letter-buttons {
+    margin-bottom: 30px;
+}
+
+#letter-buttons button {
     margin: 5px;
+    padding: 10px;
+    font-size: 1em;
     cursor: pointer;
+}
+
+#reset-game {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#letters-tried button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 1em;
+}
+
+#solution {
+    font-size: 1.5em;
+    margin-top: 20px;
+    font-weight: bold;
 }

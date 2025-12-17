@@ -7,37 +7,33 @@ let wrongElement = document.getElementById("tries");
 let wrongAttempts = 0;
 let letterButtons = document.getElementById("letter-buttons");
 let solutionElement = document.getElementById("solution");
-let errorMessages = ["Game Over", "Bad Luck", "Ups, try latter"];
-let winMessages = ["Yay, we're done", "You got luck!", "Awesome Game"];
+let errorMessages = ["Game Over! Try again?", "So close! Better luck next time!", "Oops! Don't give up!", "Nice try! Play again?", "Almost had it!"];
+let winMessages = ["Congratulations!", "You're a genius!", "Amazing! You got it!", "Well done, word master!", "Perfect! You nailed it!"];
 let lettersTried = document.getElementById("letters-tried");
+let resetGameBtn = document.getElementById("reset-game");
 
 function fChooseRandomWord() {
-  // function for select a word
+  // function to select a word
   let randomNumber = Math.floor(Math.random() * words.length);
-
-  let single_word = words[randomNumber];
-
-  return single_word;
+  return words[randomNumber];
 }
 
 function fDefineUnderScores() {
   chosenWord = fChooseRandomWord();
   guessWord = new Array(chosenWord.length).fill("_");
-
-  document.getElementById("word-display").textContent = guessWord.join(" ");
+  wordDisplayElement.textContent = guessWord.join(" ");
 }
 
 function fCreateLetterButtons() {
-  // generate 26 buttons with the caption of the correspondig letter in lower case
+  // generate 26 buttons with the caption of the corresponding letter in lower case
 
-  // cycle for create 26 buttons
-  for (i = 0; i < 26; i++) {
+  // cycle to create 26 buttons
+  for (let i = 0; i < 26; i++) {
     // define the 26 chars
     const letter = String.fromCharCode(97 + i);
-    // alert(letter);
-    // create an object button
-    button = document.createElement("button");
-    // assign the letter to the butoon
+    // create a button element
+    const button = document.createElement("button");
+    // assign the letter to the button
     button.textContent = letter;
 
     //add class for identify as a letter btn
@@ -48,29 +44,17 @@ function fCreateLetterButtons() {
     letterButtons.appendChild(button);
   }
 }
-
-function disableAllButtons() {
-  let allBtns = document.querySelectorAll(".letter-btn");
-  allBtns.forEach((item) => (item.disabled = true));
-}
 function fCheckLetter() {
   let letter = this.textContent;
 
-  // identify iif the letter exists and is the same of the secret word
-  for (j = 0; j < chosenWord.length; j++) {
-    if (chosenWord[j] == letter) {
+  // disable the clicked button so it can't be selected again
+  this.disabled = true;
+
+  // identify if the letter exists and is the same as the secret word
+  for (let j = 0; j < chosenWord.length; j++) {
+    if (chosenWord[j] === letter) {
       guessWord[j] = letter;
     }
-  }
-
-  //if there's no _ left, user has won
-  if (!guessWord.includes("_")) {
-    //generate random win message
-    let randomNumber = Math.floor(Math.random() * winMessages.length);
-    alert(winMessages[randomNumber]);
-
-    //disable all buttons
-    disableAllButtons();
   }
 
   //count wrong tries
@@ -84,7 +68,7 @@ function fCheckLetter() {
     if (wrongAttempts < 2) {
       wrongElement.style.color = "green";
     } else if (wrongAttempts > 1 && wrongAttempts < 4) {
-      wrongElement.style.color = "yellow";
+      wrongElement.style.color = "goldenrod";
     } else if (wrongAttempts > 3 && wrongAttempts < 6) {
       wrongElement.style.color = "orange";
     } else {
@@ -94,38 +78,55 @@ function fCheckLetter() {
     let newBtn = document.createElement("button");
     newBtn.textContent = letter;
     lettersTried.appendChild(newBtn);
+
   }
 
   //game over when reaches 9 wrong answers
   if (wrongAttempts > 8) {
     solutionElement.textContent = "Solution: " + chosenWord;
 
-    //generate random message
-    let randomNumber = Math.floor(Math.random() * errorMessages.length);
-    alert(errorMessages[randomNumber]);
-
     //disable all buttons
-    disableAllButtons();
+    let allBtns = document.querySelectorAll(".letter-btn");
+    allBtns.forEach((item) => (item.disabled = true));
+
+    //generate random message with delay so tries displays first
+    setTimeout(() => {
+      let randomNumber = Math.floor(Math.random() * errorMessages.length);
+      alert(errorMessages[randomNumber]);
+      resetGameBtn.style.display = "inline-block";
+    }, 100);
   }
 
   wordDisplayElement.textContent = guessWord.join(" ");
+
+  // check if user won (no more underscores in guessWord)
+  if (!guessWord.includes("_")) {
+    //disable all buttons
+    let allBtns = document.querySelectorAll(".letter-btn");
+    allBtns.forEach((item) => (item.disabled = true));
+
+    //generate random win message with delay so word displays first
+    setTimeout(() => {
+      let randomNumber = Math.floor(Math.random() * winMessages.length);
+      alert(winMessages[randomNumber]);
+      resetGameBtn.style.display = "inline-block";
+    }, 100);
+  }
 }
 
 function fCleanGame() {
   // assuring that the game will be cleaned
+  resetGameBtn.style.display = "none";
   wordDisplayElement.textContent = "";
   letterButtons.textContent = "";
   //set attempts to zero
   wrongAttempts = 0;
   wrongElement.textContent = wrongAttempts;
-
-  //set attempts to black again
   wrongElement.style.color = "black";
-
-  lettersTried.replaceChildren();
-
-  //set solution to empty
+  //clear solution text
   solutionElement.textContent = "";
+  //clear letters tried
+  lettersTried.replaceChildren();
 }
 function fInitializeGame() {
   fCleanGame();
